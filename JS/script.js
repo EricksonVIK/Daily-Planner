@@ -97,6 +97,8 @@ var dayPlan = [
 
 // date for header
 function todayDate(){
-    var currentDate =moment().format('dddd, mmmm Do');
+    var currentDate =moment().format('dddd, MMMM Do');
     $("#currentDay").text(currentDate);
 }
+// loads header date
+todayDate();
