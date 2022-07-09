@@ -138,7 +138,7 @@ dayPlan.forEach(function(thisHour) {
     var saveButton =$("<i class='far fa-save fa-lg></i>");
 
     var saveBlock = $("<button>")
-        .attr({"class":"col-md-1- saveBtn"})
+        .attr({"class":"col-md-1- saveBtn"}).text("SAVE")
 
     saveBlock.append(saveButton);
     hourFields.append(hourSpace, hourPlan, saveBlock)
@@ -146,12 +146,37 @@ dayPlan.forEach(function(thisHour) {
 });
 
 
-
-
-
-
 // saves to local
 function savePlans(){
     localStorage.setItem("dayPlan", JSON.stringify(dayPlan));
 };
 
+// retrieves local data into blocks
+function dayPlans(){
+    dayPlan.forEach(function (_thisHour){
+        $(`#${_thisHour.id}`).val(_thisHour.reminder);
+    })
+}
+
+function displayPlan(){
+    var savedPlans = JSON.parse(localStorage.getItem("dayPlan"));
+
+    if (savedPlans){
+        dayPlan=savedPlans;
+    }
+
+    savePlans();
+    dayPlans();
+}
+
+displayPlan();
+
+// saved btn function
+$(".saveBtn").on("click", function(event){
+    event.preventDefault();
+    var saveEntry = $(this).siblings(".description").children(".future").attr("id");
+    dayPlan[saveEntry].reminder = $(this).siblings(".description").children(".future").val();
+    console.log(saveEntry);
+    savePlans();
+    dayPlans();
+})
