@@ -102,3 +102,56 @@ function todayDate(){
 }
 // loads header date
 todayDate();
+
+// creates blocks
+dayPlan.forEach(function(thisHour) {
+    // new blocks
+    var hourFields = $("<form>").attr({"class":"row"});
+    $(".container").append(hourFields);
+
+    // new time
+    var hourSpace = $("<div>")
+        .text(`${thisHour.hour}${thisHour.meridiem}`)
+        .attr({"class": "col-md-2 hour"});
+
+    
+    // scheduler input
+    var hourPlan = $("<div>") 
+        .attr({"class": "col-md-9 description p-0"});
+
+    var plannedData = $("<textarea>");
+
+    hourPlan.append(plannedData);
+    
+    plannedData.attr("id", thisHour.id);
+
+    // assigns class based on time
+    if (thisHour.time < moment().format("HH")){
+        plannedData.attr({"class": "past"})
+    } else if (thisHour.time === moment().format("HH")){
+        plannedData.attr({"class":"present"})
+    } else if (thisHour.time > moment().format("HH")){
+        plannedData.attr({"class":"future"})
+    };
+
+    // save button
+    var saveButton =$("<i class='far fa-save fa-lg></i>");
+
+    var saveBlock = $("<button>")
+        .attr({"class":"col-md-1- saveBtn"})
+
+    saveBlock.append(saveButton);
+    hourFields.append(hourSpace, hourPlan, saveBlock)
+
+});
+
+
+
+
+
+
+// saves to local
+function savePlans(){
+    localStorage.setItem("dayPlan", JSON.stringify(dayPlan));
+};
+
