@@ -97,6 +97,86 @@ var dayPlan = [
 
 // date for header
 function todayDate(){
-    var currentDate =moment().format('dddd, mmmm Do');
+    var currentDate =moment().format('dddd, MMMM Do');
     $("#currentDay").text(currentDate);
 }
+// loads header date
+todayDate();
+
+// creates blocks
+dayPlan.forEach(function(thisHour) {
+    // new blocks
+    var hourFields = $("<form>").attr({"class":"row"});
+    $(".container").append(hourFields);
+
+    // new time
+    var hourSpace = $("<div>")
+        .text(`${thisHour.hour}${thisHour.meridiem}`)
+        .attr({"class": "col-md-2 hour"});
+
+    
+    // scheduler input
+    var hourPlan = $("<div>") 
+        .attr({"class": "col-md-9 description p-0"});
+
+    var plannedData = $("<textarea>");
+
+    hourPlan.append(plannedData);
+    
+    plannedData.attr("id", thisHour.id);
+
+    // assigns class based on time
+    if (thisHour.time < moment().format("HH")){
+        plannedData.attr({"class": "past"})
+    } else if (thisHour.time === moment().format("HH")){
+        plannedData.attr({"class":"present"})
+    } else if (thisHour.time > moment().format("HH")){
+        plannedData.attr({"class":"future"})
+    };
+
+    // save button
+    var saveButton =$("<i class='far fa-save fa-lg></i>");
+
+    var saveBlock = $("<button>")
+        .attr({"class":"col-md-1- saveBtn"}).text("SAVE")
+
+    saveBlock.append(saveButton);
+    hourFields.append(hourSpace, hourPlan, saveBlock)
+
+});
+
+
+// saves to local
+function savePlans(){
+    localStorage.setItem("dayPlan", JSON.stringify(dayPlan));
+};
+
+// retrieves local data into blocks
+function dayPlans(){
+    dayPlan.forEach(function (_thisHour){
+        $(`#${_thisHour.id}`).val(_thisHour.reminder);
+    })
+}
+
+function displayPlan(){
+    var savedPlans = JSON.parse(localStorage.getItem("dayPlan"));
+
+    if (savedPlans){
+        dayPlan=savedPlans;
+    }
+
+    savePlans();
+    dayPlans();
+}
+
+displayPlan();
+
+// saved btn function
+$(".saveBtn").on("click", function(event){
+    event.preventDefault();
+    var saveEntry = $(this).siblings(".description").children(".future").attr("id");
+    dayPlan[saveEntry].reminder = $(this).siblings(".description").children(".future").val();
+    console.log(saveEntry);
+    savePlans();
+    dayPlans();
+})
