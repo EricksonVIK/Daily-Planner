@@ -2,28 +2,28 @@
 var dayPlan = [
     {
         id: "0",
-        hour: "06",
+        hour: "6",
         time: "06",
         meridiem: "am",
         reminder: ""
     },
     {
         id: "1",
-        hour: "07",
+        hour: "7",
         time: "07",
         meridiem: "am",
         reminder: ""
     },
     {
         id: "2",
-        hour: "08",
+        hour: "8",
         time: "08",
         meridiem: "am",
         reminder: ""
     },
     {
         id: "3",
-        hour: "09",
+        hour: "9",
         time: "09",
         meridiem: "am",
         reminder: ""
@@ -175,7 +175,7 @@ displayPlan();
 $(".saveBtn").on("click", function(event){
     event.preventDefault();
     var saveEntry = $(this).siblings(".description").children(".future").attr("id");
-    dayPlan[saveEntry].reminder = $(this).siblings(".description").children(".future").val();
+    // dayPlan[saveEntry].reminder = $(this).siblings(".description").children(".future").val();
     console.log(saveEntry);
     savePlans();
     dayPlans();
