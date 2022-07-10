@@ -158,6 +158,7 @@ function dayPlans(){
     })
 }
 
+// displays local
 function displayPlan(){
     var savedPlans = JSON.parse(localStorage.getItem("dayPlan"));
 
